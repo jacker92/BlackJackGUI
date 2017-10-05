@@ -92,7 +92,6 @@ final JDialog dElseCase = pane7.createDialog((JFrame)null, "Hävisit!");
     jakajanKorttienSummaLabel.setText("0");
   
     // Alustetaan korttien pohjat
-    
     pelaajanKortti1Label.setIcon(null);
     pelaajanKortti2Label.setIcon(null);
     pelaajanKortti3Label.setIcon(null);
