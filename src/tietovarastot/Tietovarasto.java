@@ -15,18 +15,19 @@ import blackjack.Jako;
  * @author IH
  */
 public class Tietovarasto {
- 
+  //näitä ei normaalisti pidä kovakoodata tänne!
   private String ajuri="org.apache.derby.jdbc.EmbeddedDriver";
   private String url="jdbc:derby://localhost:1527/blackjack";
   private String kayttaja="saku";
   private String salasana="salainen";
-
   //sql-lauseet 
+
   private String sqlHaeKaikkiJaot="select pelaajankasi,vastustajankasi, voittaja from blackjack";
   private String sqlHaeVoittaja = "select voittaja from blackjack";
+
+
   private String sqlAddRound="insert into blackjack (pelaajankasi, vastustajankasi, voittaja) values (?,?,?)";
  
-  
   public void lisaaJako(String pelaaja, String jakaja, String voittaja) throws Tietovarastovirhe {
        Connection yhteys=null;
        try {

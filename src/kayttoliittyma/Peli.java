@@ -8,6 +8,7 @@ package kayttoliittyma;
 
 import javax.swing.ImageIcon;
 import blackjack.*;
+import java.awt.Graphics;
 import java.util.Date;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -16,6 +17,8 @@ import tietovarastot.*;
 
 
 public class Peli extends javax.swing.JFrame {
+    
+Graphics g;
 
   
     // Määritellään muuttujat
@@ -104,7 +107,6 @@ final JDialog dElseCase = pane7.createDialog((JFrame)null, "Hävisit!");
     jakajanKortti4Label.setIcon(null);
     jakajanKortti5Label.setIcon(null);
     jakajanKortti6Label.setIcon(null);
-    
   korttipakka.sekoita();      
  
   pelaajankasi.otaKortti(korttipakka.jaaKortti());
@@ -499,8 +501,6 @@ final JDialog dElseCase = pane7.createDialog((JFrame)null, "Hävisit!");
             }
         });
     }
-    
-    
 
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
