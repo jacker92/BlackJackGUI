@@ -5,22 +5,16 @@
  */
 package kayttoliittyma;
 
-
 import javax.swing.ImageIcon;
 import blackjack.*;
-import java.awt.Graphics;
 import java.util.Date;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import tietovarastot.*;
 
-
 public class Peli extends javax.swing.JFrame {
-    
-Graphics g;
 
-  
     // Määritellään muuttujat
     String voittaja = "";
     boolean gameLost = false;
@@ -29,108 +23,109 @@ Graphics g;
     int monesJakajanKortti = 0;
     boolean blackJack = false;
     int voitot = 0;
- 
-  Tietovarasto tietovarasto = new Tietovarasto();  
-  Korttipakka korttipakka = new Korttipakka (10);
-  PelaajanKasi pelaajankasi = new PelaajanKasi();
-  PelaajanKasi vastustajankasi = new PelaajanKasi();
-  
+
+    Tietovarasto tietovarasto = new Tietovarasto();
+    Korttipakka korttipakka = new Korttipakka(10);
+    PelaajanKasi pelaajankasi = new PelaajanKasi();
+    PelaajanKasi vastustajankasi = new PelaajanKasi();
+
 // Määritellään pelin lopussa näkyvät viesti-ikkunat
-final JOptionPane pane1 = new JOptionPane("Hävisit!");
-final JDialog dLost = pane1.createDialog((JFrame)null, "Hävisit!");
-final JOptionPane pane2 = new JOptionPane("Hävisit! Jakajalla on Blackjack!");
-final JDialog dDealerBlackJack = pane2.createDialog((JFrame)null, "Hävisit!");
-final JOptionPane pane3 = new JOptionPane("Blackjack! Voitit!");
-final JDialog dPlayerBlackJack = pane3.createDialog((JFrame)null, "Voitit!");
-final JOptionPane pane4 = new JOptionPane("Tasapeli eli jakaja voittaa!");
-final JDialog dDraw = pane4.createDialog((JFrame)null, "Hävisit!");
-final JOptionPane pane5 = new JOptionPane("Jakajalla meni yli 21! Voitit!");
-final JDialog dDealerBust = pane5.createDialog((JFrame)null, "Voitit!");
-final JOptionPane pane6 = new JOptionPane("Pelaaja voittaa!");
-final JDialog dPlayerWins = pane6.createDialog((JFrame)null, "Voitit!");
-final JOptionPane pane7 = new JOptionPane("Jakaja voittaa!");
-final JDialog dElseCase = pane7.createDialog((JFrame)null, "Hävisit!");
-    
+    final JOptionPane pane1 = new JOptionPane("Hävisit!");
+    final JDialog dLost = pane1.createDialog((JFrame) null, "Hävisit!");
+    final JOptionPane pane2 = new JOptionPane("Hävisit! Jakajalla on Blackjack!");
+    final JDialog dDealerBlackJack = pane2.createDialog((JFrame) null, "Hävisit!");
+    final JOptionPane pane3 = new JOptionPane("Blackjack! Voitit!");
+    final JDialog dPlayerBlackJack = pane3.createDialog((JFrame) null, "Voitit!");
+    final JOptionPane pane4 = new JOptionPane("Tasapeli eli jakaja voittaa!");
+    final JDialog dDraw = pane4.createDialog((JFrame) null, "Hävisit!");
+    final JOptionPane pane5 = new JOptionPane("Jakajalla meni yli 21! Voitit!");
+    final JDialog dDealerBust = pane5.createDialog((JFrame) null, "Voitit!");
+    final JOptionPane pane6 = new JOptionPane("Pelaaja voittaa!");
+    final JDialog dPlayerWins = pane6.createDialog((JFrame) null, "Voitit!");
+    final JOptionPane pane7 = new JOptionPane("Jakaja voittaa!");
+    final JDialog dElseCase = pane7.createDialog((JFrame) null, "Hävisit!");
+
     public Peli() {
-        
-  initComponents();
-  
-  voitotTekstiLabel.setText(voitot + "");
-  korttienSummaTeksti.setText("0");
-  jakajanKorttienSummaLabel.setText("0");
-  
-  korttipakka.sekoita();      
- 
-  pelaajankasi.otaKortti(korttipakka.jaaKortti());
-  pelaajankasi.otaKortti(korttipakka.jaaKortti());
-  
-  Kortti apukortti = pelaajankasi.getKortti(monesKortti);
-  pelaajanKortti1Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
-  monesKortti++;
-  
-  apukortti = pelaajankasi.getKortti(monesKortti);
-  pelaajanKortti2Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
-  monesKortti++;
-  
-  String summa = pelaajankasi.selvitaSumma() + "";
-  korttienSummaTeksti.setText(summa);
-  
+
+        initComponents();
+
+        voitotTekstiLabel.setText(voitot + "");
+        korttienSummaTeksti.setText("0");
+        jakajanKorttienSummaLabel.setText("0");
+
+        korttipakka.sekoita();
+
+        pelaajankasi.lisaaKortti(korttipakka.jaaKortti());
+        pelaajankasi.lisaaKortti(korttipakka.jaaKortti());
+
+        Kortti apukortti = pelaajankasi.getKortti(monesKortti);
+        pelaajanKortti1Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
+        monesKortti++;
+
+        apukortti = pelaajankasi.getKortti(monesKortti);
+        pelaajanKortti2Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
+        monesKortti++;
+
+        String summa = pelaajankasi.selvitaSumma() + "";
+        korttienSummaTeksti.setText(summa);
+
     }
-    
+
     public void PelinAlustus() {
-   
-    // Alustetaan muuttujat    
-    gameLost = false;
-    cardsDealing = true;
-    monesKortti = 0;
-    monesJakajanKortti = 0;
-    blackJack = false;
-    pelaajankasi.PoistaKortit();
-    vastustajankasi.PoistaKortit();
-    korttipakka.lisaaPakka();
-    korttipakka.sekoita();
-    // Asetetaan tekstikenttiin nollat
-    
-    korttienSummaTeksti.setText("0");
-    jakajanKorttienSummaLabel.setText("0");
-  
-    // Alustetaan korttien pohjat
-    pelaajanKortti1Label.setIcon(null);
-    pelaajanKortti2Label.setIcon(null);
-    pelaajanKortti3Label.setIcon(null);
-    pelaajanKortti4Label.setIcon(null);
-    pelaajanKortti5Label.setIcon(null);
-    pelaajanKortti6Label.setIcon(null);
-    jakajanKortti1Label.setIcon(null);
-    jakajanKortti2Label.setIcon(null);
-    jakajanKortti3Label.setIcon(null);
-    jakajanKortti4Label.setIcon(null);
-    jakajanKortti5Label.setIcon(null);
-    jakajanKortti6Label.setIcon(null);
-  korttipakka.sekoita();      
- 
-  pelaajankasi.otaKortti(korttipakka.jaaKortti());
-  pelaajankasi.otaKortti(korttipakka.jaaKortti());
-  
-  Kortti apukortti = pelaajankasi.getKortti(monesKortti);
-  pelaajanKortti1Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
-  monesKortti++;
-  
-  apukortti = pelaajankasi.getKortti(monesKortti);
-  pelaajanKortti2Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
-  monesKortti++;
-  
-  String summa = pelaajankasi.selvitaSumma() + "";
-  korttienSummaTeksti.setText(summa);
-      
-   }
+
+        // Alustetaan muuttujat    
+        gameLost = false;
+        cardsDealing = true;
+        monesKortti = 0;
+        monesJakajanKortti = 0;
+        blackJack = false;
+        pelaajankasi.PoistaKortit();
+        vastustajankasi.PoistaKortit();
+        korttipakka.lisaaPakka();
+        korttipakka.sekoita();
+        // Asetetaan tekstikenttiin nollat
+
+        korttienSummaTeksti.setText("0");
+        jakajanKorttienSummaLabel.setText("0");
+
+        // Alustetaan korttien pohjat
+        pelaajanKortti1Label.setIcon(null);
+        pelaajanKortti2Label.setIcon(null);
+        pelaajanKortti3Label.setIcon(null);
+        pelaajanKortti4Label.setIcon(null);
+        pelaajanKortti5Label.setIcon(null);
+        pelaajanKortti6Label.setIcon(null);
+        jakajanKortti1Label.setIcon(null);
+        jakajanKortti2Label.setIcon(null);
+        jakajanKortti3Label.setIcon(null);
+        jakajanKortti4Label.setIcon(null);
+        jakajanKortti5Label.setIcon(null);
+        jakajanKortti6Label.setIcon(null);
+        korttipakka.sekoita();
+
+        pelaajankasi.lisaaKortti(korttipakka.jaaKortti());
+        pelaajankasi.lisaaKortti(korttipakka.jaaKortti());
+
+        Kortti apukortti = pelaajankasi.getKortti(monesKortti);
+        pelaajanKortti1Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
+        monesKortti++;
+
+        apukortti = pelaajankasi.getKortti(monesKortti);
+        pelaajanKortti2Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
+        monesKortti++;
+
+        String summa = pelaajankasi.selvitaSumma() + "";
+        korttienSummaTeksti.setText(summa);
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
-    
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -242,234 +237,222 @@ final JDialog dElseCase = pane7.createDialog((JFrame)null, "Hävisit!");
     }// </editor-fold>//GEN-END:initComponents
 
     private void lisaaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lisaaButtonActionPerformed
-    
-        while (cardsDealing == true) {
-      
-        if (monesKortti == 2 && gameLost == false) {
-        pelaajankasi.otaKortti(korttipakka.jaaKortti());
-        Kortti apukortti = pelaajankasi.getKortti(monesKortti);
-        pelaajanKortti3Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
-        String summa = pelaajankasi.selvitaSumma() + "";
-        korttienSummaTeksti.setText(summa); 
-        monesKortti++;
-        break;
-            
-    }
-      
-        if (monesKortti == 3 && gameLost == false) {
-            pelaajankasi.otaKortti(korttipakka.jaaKortti());
-            Kortti apukortti = pelaajankasi.getKortti(monesKortti);
-            pelaajanKortti4Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
-            String summa = pelaajankasi.selvitaSumma() + "";
-            korttienSummaTeksti.setText(summa);
-            monesKortti++;
-            break;
-            
+
+        while (cardsDealing) {
+
+            if (monesKortti == 2 && !gameLost) {
+                pelaajankasi.lisaaKortti(korttipakka.jaaKortti());
+                Kortti apukortti = pelaajankasi.getKortti(monesKortti);
+                pelaajanKortti3Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
+                String summa = pelaajankasi.selvitaSumma() + "";
+                korttienSummaTeksti.setText(summa);
+                monesKortti++;
+                break;
+
+            }
+
+            if (monesKortti == 3 && !gameLost) {
+                pelaajankasi.lisaaKortti(korttipakka.jaaKortti());
+                Kortti apukortti = pelaajankasi.getKortti(monesKortti);
+                pelaajanKortti4Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
+                String summa = pelaajankasi.selvitaSumma() + "";
+                korttienSummaTeksti.setText(summa);
+                monesKortti++;
+                break;
+
+            }
+
+            if (monesKortti == 4 && !gameLost) {
+                pelaajankasi.lisaaKortti(korttipakka.jaaKortti());
+                Kortti apukortti = pelaajankasi.getKortti(monesKortti);
+                pelaajanKortti5Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
+                String summa = pelaajankasi.selvitaSumma() + "";
+                korttienSummaTeksti.setText(summa);
+                monesKortti++;
+                break;
+            }
+
+            if (monesKortti == 5 && !gameLost) {
+                pelaajankasi.lisaaKortti(korttipakka.jaaKortti());
+                Kortti apukortti = pelaajankasi.getKortti(monesKortti);
+                pelaajanKortti6Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
+                String summa = pelaajankasi.selvitaSumma() + "";
+                korttienSummaTeksti.setText(summa);
+                monesKortti++;
+                break;
+            }
+
+            if (monesKortti >= 6) {
+                break;
+            }
         }
-        
-        if (monesKortti == 4 && gameLost == false) {
-            pelaajankasi.otaKortti(korttipakka.jaaKortti());
-            Kortti apukortti = pelaajankasi.getKortti(monesKortti);
-            pelaajanKortti5Label.setIcon(new ImageIcon (apukortti.getKuvaPolku()));
-            String summa = pelaajankasi.selvitaSumma() + "";
-            korttienSummaTeksti.setText(summa);
-            monesKortti++;
-            break;
-        }
-        
-        if (monesKortti == 5 && gameLost == false) {
-            pelaajankasi.otaKortti(korttipakka.jaaKortti());
-            Kortti apukortti = pelaajankasi.getKortti(monesKortti);
-            pelaajanKortti6Label.setIcon(new ImageIcon (apukortti.getKuvaPolku()));
-            String summa = pelaajankasi.selvitaSumma() + "";
-            korttienSummaTeksti.setText(summa);
-            monesKortti++;
-            break;
-        }
-        
-        if (monesKortti >= 6) {
-            break;
-        }
-        }
-        
+
         if (pelaajankasi.selvitaSumma() > 21) {
-        gameLost = true;
-         
+            gameLost = true;
+
         }
-       
-        if (gameLost == true) {
-        voittaja = "Jakaja";
-        dLost.setLocation(450, 330);
-        dLost.setVisible(true);
-        PelinAlustus();
+
+        if (gameLost) {
+            voittaja = "Jakaja";
+            dLost.setLocation(450, 330);
+            dLost.setVisible(true);
+            PelinAlustus();
         }
-               
+
     }//GEN-LAST:event_lisaaButtonActionPerformed
 
     private void jaaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jaaButtonActionPerformed
-    
-        if (pelaajankasi.isBlackJack() == true) {
-         blackJack = true;
-        }  
-        
-    if (gameLost == false) {
-        
-        
-        // Kaksi korttia jaetaan joka tapauksessa
-        
-        vastustajankasi.otaKortti(korttipakka.jaaKortti());
-        Kortti apukortti = vastustajankasi.getKortti(monesJakajanKortti);
-        jakajanKortti1Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
-        String summa = vastustajankasi.selvitaSumma() + "";
-        jakajanKorttienSummaLabel.setText(summa);
-        monesJakajanKortti++;
-        
-        
-        vastustajankasi.otaKortti(korttipakka.jaaKortti());
-        apukortti = vastustajankasi.getKortti(monesJakajanKortti);
-        jakajanKortti2Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
-        summa = vastustajankasi.selvitaSumma() + "";
-        jakajanKorttienSummaLabel.setText(summa);
-        monesJakajanKortti++;
-        
-        
-        Ajastin();
-        //jakajanKortti2Label.update(g);
-      
-    } 
-  
-        
+
+        if (pelaajankasi.isBlackJack()) {
+            blackJack = true;
+        }
+
+        if (!gameLost) {
+
+            // Kaksi korttia jaetaan joka tapauksessa
+            vastustajankasi.lisaaKortti(korttipakka.jaaKortti());
+            Kortti apukortti = vastustajankasi.getKortti(monesJakajanKortti);
+            jakajanKortti1Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
+            String summa = vastustajankasi.selvitaSumma() + "";
+            jakajanKorttienSummaLabel.setText(summa);
+            monesJakajanKortti++;
+
+            vastustajankasi.lisaaKortti(korttipakka.jaaKortti());
+            apukortti = vastustajankasi.getKortti(monesJakajanKortti);
+            jakajanKortti2Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
+            summa = vastustajankasi.selvitaSumma() + "";
+            jakajanKorttienSummaLabel.setText(summa);
+            monesJakajanKortti++;
+
+        }
+
         // Kolmas kortti
         if (vastustajankasi.selvitaSumma() < 17) {
-        
-      
-         vastustajankasi.otaKortti(korttipakka.jaaKortti());
-        Kortti apukortti = vastustajankasi.getKortti(monesJakajanKortti);
-        jakajanKortti3Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
-        String summa = vastustajankasi.selvitaSumma() + "";
-        jakajanKorttienSummaLabel.setText(summa);
-        monesJakajanKortti++;     
+
+            vastustajankasi.lisaaKortti(korttipakka.jaaKortti());
+            Kortti apukortti = vastustajankasi.getKortti(monesJakajanKortti);
+            jakajanKortti3Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
+            String summa = vastustajankasi.selvitaSumma() + "";
+            jakajanKorttienSummaLabel.setText(summa);
+            monesJakajanKortti++;
         }
-  
-      
+
         // Neljäs kortti
         if (vastustajankasi.selvitaSumma() < 17) {
-            
-        vastustajankasi.otaKortti(korttipakka.jaaKortti());
-        Kortti apukortti = vastustajankasi.getKortti(monesJakajanKortti);
-        jakajanKortti4Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
-        String summa = vastustajankasi.selvitaSumma() + "";
-        jakajanKorttienSummaLabel.setText(summa);
-        monesJakajanKortti++;  
+
+            vastustajankasi.lisaaKortti(korttipakka.jaaKortti());
+            Kortti apukortti = vastustajankasi.getKortti(monesJakajanKortti);
+            jakajanKortti4Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
+            String summa = vastustajankasi.selvitaSumma() + "";
+            jakajanKorttienSummaLabel.setText(summa);
+            monesJakajanKortti++;
         }
-        
+
         // Viides kortti
         if (vastustajankasi.selvitaSumma() < 17) {
-       
-         vastustajankasi.otaKortti(korttipakka.jaaKortti());
-        Kortti apukortti = vastustajankasi.getKortti(monesJakajanKortti);
-        jakajanKortti5Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
-        String summa = vastustajankasi.selvitaSumma() + "";
-        jakajanKorttienSummaLabel.setText(summa);
-        monesJakajanKortti++;  
+
+            vastustajankasi.lisaaKortti(korttipakka.jaaKortti());
+            Kortti apukortti = vastustajankasi.getKortti(monesJakajanKortti);
+            jakajanKortti5Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
+            String summa = vastustajankasi.selvitaSumma() + "";
+            jakajanKorttienSummaLabel.setText(summa);
+            monesJakajanKortti++;
         }
-        
+
         // Kuudes kortti
         if (vastustajankasi.selvitaSumma() < 17) {
-       
-         vastustajankasi.otaKortti(korttipakka.jaaKortti());
-        Kortti apukortti = vastustajankasi.getKortti(monesJakajanKortti);
-        jakajanKortti6Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
-        String summa = vastustajankasi.selvitaSumma() + "";
-        jakajanKorttienSummaLabel.setText(summa);
-        monesJakajanKortti++;  
+
+            vastustajankasi.lisaaKortti(korttipakka.jaaKortti());
+            Kortti apukortti = vastustajankasi.getKortti(monesJakajanKortti);
+            jakajanKortti6Label.setIcon(new ImageIcon(apukortti.getKuvaPolku()));
+            String summa = vastustajankasi.selvitaSumma() + "";
+            jakajanKorttienSummaLabel.setText(summa);
+            monesJakajanKortti++;
         }
-        
+
         // Muutetaan käsien tiedot järkevään muotoon ennen tietokantaan tallentamista
         String pelaaja = "";
         String jakaja = "";
-        
-        for (int i = 0; i < pelaajankasi.kortit.size(); i++) {
-            pelaaja += ""+pelaajankasi.kortit.get(i) + ", " ;
+
+        for (int i = 0; i < pelaajankasi.getKortit().size(); i++) {
+            pelaaja += "" + pelaajankasi.getKortit().get(i) + ", ";
         }
-        
-        for (int i = 0; i < vastustajankasi.kortit.size(); i++) {
-            jakaja += ""+vastustajankasi.kortit.get(i) + ", ";
+
+        for (int i = 0; i < vastustajankasi.getKortit().size(); i++) {
+            jakaja += "" + vastustajankasi.getKortit().get(i) + ", ";
         }
         VoittajanTarkistus();
         // Lisätään jako tietokantaan
         try {
-        tietovarasto.lisaaJako(pelaaja, jakaja, voittaja);
-        }
-        catch (Exception e) {
+            tietovarasto.lisaaJako(pelaaja, jakaja, voittaja);
+        } catch (Exception e) {
             System.out.println("Tietovarasto ei ole auki");
         }
-        
+
         PelinAlustus();
         voitotTekstiLabel.setText(voitot + "");
-     
-        
+
+
     }//GEN-LAST:event_jaaButtonActionPerformed
 
     private void lopetaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lopetaButtonActionPerformed
-     System.exit(0);
+        System.exit(0);
     }//GEN-LAST:event_lopetaButtonActionPerformed
 
     private void valikkoonButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_valikkoonButtonActionPerformed
-    new Paavalikko().setVisible(true);
-    this.dispose();
+        new Paavalikko().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_valikkoonButtonActionPerformed
 
-   private void Ajastin() {
-           // Ajastin    
+    private void Ajastin() {
+        // Ajastin    
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0L;
 
         while (elapsedTime < 200) {
-        elapsedTime = (new Date()).getTime() - startTime;
+            elapsedTime = (new Date()).getTime() - startTime;
         }
-   }
-   
-   private void VoittajanTarkistus() {
-       
-           if (gameLost == true) {
-        dLost.setLocation(450, 330);
-        dLost.setVisible(true);
-        voittaja = "Jakaja";
-    }   else if (vastustajankasi.selvitaSumma() == 21 && monesJakajanKortti == 2) {
-        dDealerBlackJack.setLocation(450, 330);
-        dDealerBlackJack.setVisible(true);
-        voittaja = "Jakaja";
-    }   else if (blackJack == true) {
-        dPlayerBlackJack.setLocation(450, 330);
-        dPlayerBlackJack.setVisible(true);
-        voitot++;
-        voittaja = "Pelaaja";
-    }   else if (vastustajankasi.selvitaSumma() == pelaajankasi.selvitaSumma()) {
-        dDraw.setLocation(450, 330);
-        dDraw.setVisible(true);
-        voittaja = "Jakaja";
-    }   else if (vastustajankasi.selvitaSumma() > 21) {
-        dDealerBust.setLocation(450, 330);
-        dDealerBust.setVisible(true);
-        voitot++;
-        voittaja = "Pelaaja";
-    }   else if (pelaajankasi.selvitaSumma() > vastustajankasi.selvitaSumma()) {
-        dPlayerWins.setLocation(450, 330);
-        dPlayerWins.setVisible(true);
-        voitot++;
-        voittaja = "Pelaaja";
-    }   else {
-        dElseCase.setLocation(450, 330);
-        dElseCase.setVisible(true);
-        voittaja = "Jakaja";
     }
-    
-   
-   }
+
+    private void VoittajanTarkistus() {
+
+        if (gameLost) {
+            dLost.setLocation(450, 330);
+            dLost.setVisible(true);
+            voittaja = "Jakaja";
+        } else if (vastustajankasi.selvitaSumma() == 21 && monesJakajanKortti == 2) {
+            dDealerBlackJack.setLocation(450, 330);
+            dDealerBlackJack.setVisible(true);
+            voittaja = "Jakaja";
+        } else if (blackJack) {
+            dPlayerBlackJack.setLocation(450, 330);
+            dPlayerBlackJack.setVisible(true);
+            voitot++;
+            voittaja = "Pelaaja";
+        } else if (vastustajankasi.selvitaSumma() == pelaajankasi.selvitaSumma()) {
+            dDraw.setLocation(450, 330);
+            dDraw.setVisible(true);
+            voittaja = "Jakaja";
+        } else if (vastustajankasi.selvitaSumma() > 21) {
+            dDealerBust.setLocation(450, 330);
+            dDealerBust.setVisible(true);
+            voitot++;
+            voittaja = "Pelaaja";
+        } else if (pelaajankasi.selvitaSumma() > vastustajankasi.selvitaSumma()) {
+            dPlayerWins.setLocation(450, 330);
+            dPlayerWins.setVisible(true);
+            voitot++;
+            voittaja = "Pelaaja";
+        } else {
+            dElseCase.setLocation(450, 330);
+            dElseCase.setVisible(true);
+            voittaja = "Jakaja";
+        }
+
+    }
+
     public static void main(String args[]) {
-        
-  
+
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -497,12 +480,12 @@ final JDialog dElseCase = pane7.createDialog((JFrame)null, "Hävisit!");
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Peli().setVisible(true);
-              
+
             }
         });
     }
 
-  
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jaaButton;
     private javax.swing.JLabel jakajanKortti1Label;
@@ -528,6 +511,5 @@ final JDialog dElseCase = pane7.createDialog((JFrame)null, "Hävisit!");
     private javax.swing.JLabel voitotLabel;
     private javax.swing.JLabel voitotTekstiLabel;
     // End of variables declaration//GEN-END:variables
- 
- 
+
 }

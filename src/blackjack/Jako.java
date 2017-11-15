@@ -20,8 +20,8 @@ public class Jako {
  }
  
  public String toString() {
-     String mjono = "";
-     mjono = "Pelaaja:  " + pelaajankasi + "  Jakaja:  " + vastustajankasi + "  Voittaja:  " + voittaja;
-     return mjono;
+  
+     return "Pelaaja:  " + pelaajankasi + "  Jakaja:  " + vastustajankasi + 
+     "  Voittaja:  " + voittaja;
  }
 }

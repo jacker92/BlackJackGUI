@@ -1,15 +1,14 @@
 package blackjack;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class PelaajanKasi {
     
-    public List<Kortti> kortit = new ArrayList<Kortti>();
+    private List<Kortti> kortit = new ArrayList<Kortti>();
     
     
-    public void otaKortti(Kortti kortti) {
+    public void lisaaKortti(Kortti kortti) {
         kortit.add(kortti);
     }
     
@@ -21,11 +20,16 @@ public class PelaajanKasi {
         kortit.clear();
         }
     
+    public List<Kortti> getKortit() {
+        return kortit;
+    }
+    
     public int selvitaSumma() {
         int summa = 0;
         int aces = 0;
         for (int i = 0; i < kortit.size(); i++) {
-            if (kortit.get(i).getArvo() == 11 || kortit.get(i).getArvo() == 12 || kortit.get(i).getArvo() == 13) {
+            if (kortit.get(i).getArvo() == 11 || kortit.get(i).getArvo() == 12 
+               || kortit.get(i).getArvo() == 13) {
                 summa += 10;
             }   else if (kortit.get(i).getArvo() == 1) {
                 summa += 11;

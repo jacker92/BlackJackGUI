@@ -1,32 +1,44 @@
-//IH 2009
-//koodaus UTF-8
 
 package tietovarastot;
 
-import blackjack.Kortti;
 import yhteydenhallinta.YhteydenHallinta;
-import blackjack.PelaajanKasi;
 import java.sql.*;
 import java.util.*;
 import blackjack.Jako;
+import java.io.IOException;
+import java.io.InputStream;
 
-/**
- *
- * @author IH
- */
 public class Tietovarasto {
-  //näitä ei normaalisti pidä kovakoodata tänne!
-  private String ajuri="org.apache.derby.jdbc.EmbeddedDriver";
-  private String url="jdbc:derby://localhost:1527/blackjack";
-  private String kayttaja="saku";
-  private String salasana="salainen";
+    
+  private String ajuri;
+  private String url;
+  private String kayttaja;
+  private String salasana;
+  
   //sql-lauseet 
-
   private String sqlHaeKaikkiJaot="select pelaajankasi,vastustajankasi, voittaja from blackjack";
   private String sqlHaeVoittaja = "select voittaja from blackjack";
-
-
   private String sqlAddRound="insert into blackjack (pelaajankasi, vastustajankasi, voittaja) values (?,?,?)";
+  
+   public Tietovarasto() {
+        getProperties(); 
+    }
+
+    private void getProperties() {
+        Properties prop = new Properties();
+        try {
+            InputStream input = getClass().getClassLoader().getResourceAsStream("yhteydenhallinta/connectionInfo.properties");
+            prop.load(input);
+            
+            ajuri = prop.getProperty("ajuri");
+            url = prop.getProperty("url");
+            kayttaja = prop.getProperty("kayttaja");
+            salasana = prop.getProperty("salasana");
+ 
+        } catch (IOException e) {
+            System.out.println("exception");
+        }
+    }
  
   public void lisaaJako(String pelaaja, String jakaja, String voittaja) throws Tietovarastovirhe {
        Connection yhteys=null;
